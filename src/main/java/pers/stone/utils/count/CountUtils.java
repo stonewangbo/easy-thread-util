@@ -12,20 +12,21 @@ import java.util.Map;
  *         Oct 20, 2015 5:38:22 PM
  */
 public class CountUtils {
-    static Map<String,Integer> countMap = new HashMap<String,Integer>();
+
+    static Map<String, Integer> countMap = new HashMap<String, Integer>();
+
     public static synchronized void count(String key, int count) {
-        if(!countMap.containsKey(key)){
+        if (!countMap.containsKey(key)) {
             countMap.put(key, count);
-        }else{
-            countMap.put(key, countMap.get(key)+count);
+        } else {
+            countMap.put(key, countMap.get(key) + count);
         }
     }
 
-   public static  String countInfo() {
+    public static String countInfo() {
         StringBuilder res = new StringBuilder();
-        for(String key:countMap.keySet()){
-            res.append("\r\n数据类型:").append(key)
-            .append(" 数量:").append(countMap.get(key));
+        for (String key : countMap.keySet()) {
+            res.append("\r\n数据类型:").append(key).append(" 数量:").append(countMap.get(key));
         }
         return res.toString();
     }
