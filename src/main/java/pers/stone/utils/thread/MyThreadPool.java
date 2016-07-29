@@ -1,11 +1,3 @@
-/*
- * 宜人贷
- * MyThreadPool.java
- * Copyright (c) 2012 普信恒业科技发展(北京)有限公司
- * All rights reserved.
- * --------------------------
- * Jul 29, 2016 Created
- */
 package pers.stone.utils.thread;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,31 +20,31 @@ import java.util.concurrent.BlockingQueue;
 public class MyThreadPool {
 
     private List<MyThread> pool;
-    
+
     private Map<String, Method> modelMap;
 
     private BlockingQueue<ThreadTask<?>> taskQueue;
-    
-    public MyThreadPool(int poolSize,int queueSize){
+
+    public MyThreadPool(int poolSize, int queueSize) {
         pool = new ArrayList<MyThread>(poolSize);
         modelMap = new HashMap<String, Method>();
         taskQueue = new ArrayBlockingQueue<ThreadTask<?>>(queueSize);
-        for(int i=0;i<poolSize;i++){
+        for (int i = 0; i < poolSize; i++) {
             MyThread thread = new MyThread();
             pool.add(thread);
             thread.start();
         }
     }
-    
-    public void shutdown(){
-        for(MyThread thread:pool){
+
+    public void shutdown() {
+        for (MyThread thread : pool) {
             thread.interrupt();
-        }        
+        }
     }
 
     public <E> TaskReturn<E> submit(Object instance, String methName, Object... args) throws Exception {
         Class<? extends Object> className = instance.getClass();
-        String methodkey = className.getName()+"_"+methName;
+        String methodkey = className.getName() + "_" + methName;
         Method method = modelMap.get(methodkey);
         if (method == null) {
             for (Method item : className.getMethods()) {
@@ -66,17 +58,19 @@ public class MyThreadPool {
         if (method == null) {
             throw new Exception("Can not find method [" + methName + "] in class:" + className);
         }
-        
+
         ThreadTask<E> task = new ThreadTask<E>(instance, method, args);
         taskQueue.put(task);
         return task.res;
     }
 
     public class TaskReturn<E> {
+
         E res = null;
+
         public E getTaskResult() throws InterruptedException {
-            while(res==null){
-                synchronized(this){
+            while (res == null) {
+                synchronized (this) {
                     this.wait();
                 }
             }
@@ -90,7 +84,7 @@ public class MyThreadPool {
         Method method;
         Object[] args;
         TaskReturn<E> res;
-      
+
         public ThreadTask(Object instance, Method method, Object[] args) {
             super();
             this.instance = instance;
@@ -98,11 +92,11 @@ public class MyThreadPool {
             this.args = args;
             res = new TaskReturn<E>();
         }
-        
+
         @SuppressWarnings("unchecked")
-        public void  fire() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-            res.res = (E)method.invoke(instance, args);
-            synchronized(res){
+        public void fire() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            res.res = (E) method.invoke(instance, args);
+            synchronized (res) {
                 res.notify();
             }
         }
@@ -133,5 +127,5 @@ public class MyThreadPool {
         }
 
     }
-    
+
 }

@@ -1,13 +1,5 @@
 import pers.stone.utils.thread.MyThreadPool;
 
-/*
- * 宜人贷
- * TestTheadPool.java
- * Copyright (c) 2012 普信恒业科技发展(北京)有限公司
- * All rights reserved.
- * --------------------------
- * Jul 29, 2016 Created
- */
 
 /**
  * 
