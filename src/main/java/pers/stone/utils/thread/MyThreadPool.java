@@ -65,11 +65,12 @@ public class MyThreadPool {
     }
 
     public class TaskReturn<E> {
+        volatile boolean finishFlag = false;
 
         E res = null;
 
         public E getTaskResult() throws InterruptedException {
-            while (res == null) {
+            while (!finishFlag) {
                 synchronized (this) {
                     this.wait();
                 }
@@ -97,6 +98,7 @@ public class MyThreadPool {
         public void fire() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
             res.res = (E) method.invoke(instance, args);
             synchronized (res) {
+                res.finishFlag = true;
                 res.notify();
             }
         }
@@ -120,6 +122,9 @@ public class MyThreadPool {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
