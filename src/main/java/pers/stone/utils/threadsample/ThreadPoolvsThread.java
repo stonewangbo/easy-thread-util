@@ -89,8 +89,8 @@ public class ThreadPoolvsThread implements Runnable {
                 "runWithMyThreadPool:" + count + " times, cost:" + (System.currentTimeMillis() - start) + "ms");
         threadPool.shutdown();
     }
-    
-    private void runWithMyThreadPoolRefect(int count) throws Exception {
+
+    private void runWithMyThreadPoolReflect(int count) throws Exception {
         MyThreadPool threadPool = new MyThreadPool(poolSize, 1000);
         long start = System.currentTimeMillis();
         finishCount = 0;
@@ -98,8 +98,8 @@ public class ThreadPoolvsThread implements Runnable {
             threadPool.submit(this, "run");
         }
         waitForFinish(count);
-        System.out.println(
-                "runWithMyThreadPoolRefect:" + count + " times, cost:" + (System.currentTimeMillis() - start) + "ms");
+        System.out.println("runWithMyThreadPoolReflect:" + count + " times, cost:"
+                + (System.currentTimeMillis() - start) + "ms");
         threadPool.shutdown();
     }
 
@@ -120,7 +120,7 @@ public class ThreadPoolvsThread implements Runnable {
         threadPoolvsThread.runWithThread(100);
         threadPoolvsThread.runWithThreadPool(100);
         threadPoolvsThread.runWithMyThreadPool(100);
-        threadPoolvsThread.runWithMyThreadPoolRefect(100);
+        threadPoolvsThread.runWithMyThreadPoolReflect(100);
     }
 
    
