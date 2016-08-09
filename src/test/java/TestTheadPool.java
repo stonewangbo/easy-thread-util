@@ -1,4 +1,5 @@
-import pers.stone.utils.thread.MyThreadPool;
+import pers.stone.utils.mythread.MyThreadPool;
+import pers.stone.utils.mythread.TaskReturn;
 
 
 /**
@@ -17,7 +18,7 @@ public class TestTheadPool {
             System.out.println("task:"+taskName+" step:"+i);
         }
         
-        return "task:"+taskName+" finish";
+        return "task:"+taskName+" finish";   
     }
 
     /**
@@ -27,11 +28,13 @@ public class TestTheadPool {
     public static void main(String[] args) throws Exception {
         MyThreadPool myThreadPool = new MyThreadPool(4,4);
         TestTheadPool test = new TestTheadPool();      
-        MyThreadPool.TaskReturn<String> res1 = myThreadPool.submit(test, "doTask", "task1");
-        MyThreadPool.TaskReturn<String> res2 = myThreadPool.submit(test, "doTask", "task2");
+        TaskReturn<String> res1 = myThreadPool.submit(test, "doTask", "task1");
+        TaskReturn<String> res2 = myThreadPool.submit(test, "doTask", "task2");
         
         System.out.println("res1:"+res1.getTaskResult());
         System.out.println("res2:"+res2.getTaskResult());
+        
+        myThreadPool.shutdown();
     }   
 
 }
