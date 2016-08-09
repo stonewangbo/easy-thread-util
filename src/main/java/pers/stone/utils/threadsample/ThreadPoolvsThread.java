@@ -1,4 +1,3 @@
-
 package pers.stone.utils.threadsample;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -45,8 +44,8 @@ public class ThreadPoolvsThread implements Runnable {
         for (int i = 0; i < count; i++) {
             run();
         }
-        System.out.println(
-                "runWithSingleThread:" + count + " times, cost:" + (System.currentTimeMillis() - start) + "ms");
+        System.out.println("runWithSingleThread:" + count + " times, cost:" + (System.currentTimeMillis() - start)
+                + "ms");
     }
 
     private void runWithThread(int count) throws InterruptedException {
@@ -82,12 +81,12 @@ public class ThreadPoolvsThread implements Runnable {
             threadPool.submit(this);
         }
         waitForFinish(count);
-        System.out.println(
-                "runWithMyThreadPool:" + count + " times, cost:" + (System.currentTimeMillis() - start) + "ms");
+        System.out.println("runWithMyThreadPool:" + count + " times, cost:" + (System.currentTimeMillis() - start)
+                + "ms");
         threadPool.shutdown();
     }
-    
-    private void runWithMyThreadPoolRefect(int count) throws Exception {
+
+    private void runWithMyThreadPoolReflect(int count) throws Exception {
         MyThreadPool threadPool = new MyThreadPool(8, 1000);
         long start = System.currentTimeMillis();
         finishCount = 0;
@@ -95,8 +94,8 @@ public class ThreadPoolvsThread implements Runnable {
             threadPool.submit(this, "run");
         }
         waitForFinish(count);
-        System.out.println(
-                "runWithMyThreadPoolRefect:" + count + " times, cost:" + (System.currentTimeMillis() - start) + "ms");
+        System.out.println("runWithMyThreadPoolReflect:" + count + " times, cost:"
+                + (System.currentTimeMillis() - start) + "ms");
         threadPool.shutdown();
     }
 
@@ -117,9 +116,7 @@ public class ThreadPoolvsThread implements Runnable {
         threadPoolvsThread.runWithThread(100);
         threadPoolvsThread.runWithThreadPool(100);
         threadPoolvsThread.runWithMyThreadPool(100);
-        threadPoolvsThread.runWithMyThreadPoolRefect(100);
+        threadPoolvsThread.runWithMyThreadPoolReflect(100);
     }
 
-   
-   
 }
