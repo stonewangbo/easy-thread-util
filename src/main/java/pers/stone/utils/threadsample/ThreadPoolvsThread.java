@@ -23,6 +23,9 @@ public class ThreadPoolvsThread implements Runnable {
     volatile int finishCount;
     Lock lock = new ReentrantLock();
     Condition cond = lock.newCondition();
+    
+    
+    int poolSize = Runtime.getRuntime().availableProcessors();
 
     public void run() {
         // 测试进行一定量的运算
@@ -60,7 +63,7 @@ public class ThreadPoolvsThread implements Runnable {
     }
 
     private void runWithThreadPool(int count) throws InterruptedException {
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(8, 8, 1000L, TimeUnit.MILLISECONDS,
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(poolSize, poolSize, 1000L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<Runnable>(1000));
         threadPool.prestartAllCoreThreads();
         long start = System.currentTimeMillis();
@@ -75,7 +78,7 @@ public class ThreadPoolvsThread implements Runnable {
     }
 
     private void runWithMyThreadPool(int count) throws Exception {
-        MyThreadPool threadPool = new MyThreadPool(8, 1000);
+        MyThreadPool threadPool = new MyThreadPool(poolSize, 1000);
         long start = System.currentTimeMillis();
         finishCount = 0;
         for (int i = 0; i < count; i++) {
@@ -88,7 +91,7 @@ public class ThreadPoolvsThread implements Runnable {
     }
     
     private void runWithMyThreadPoolRefect(int count) throws Exception {
-        MyThreadPool threadPool = new MyThreadPool(8, 1000);
+        MyThreadPool threadPool = new MyThreadPool(poolSize, 1000);
         long start = System.currentTimeMillis();
         finishCount = 0;
         for (int i = 0; i < count; i++) {
