@@ -6,13 +6,13 @@ import java.util.concurrent.BlockingQueue;
 /**
  * 
  * 类名: MyThread <br/>
- * 用途:  <br/>
+ * 用途: <br/>
  * 
  * @author wangbo <br/>
  *         Aug 9, 2016 5:30:33 PM
  */
 public class MyThread extends Thread {
-    
+
     private BlockingQueue<ThreadTask<?>> taskQueue;
 
     /**
@@ -25,11 +25,12 @@ public class MyThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (!this.isInterrupted()) {
             try {
                 ThreadTask<?> task = taskQueue.take();
                 task.fire();
             } catch (InterruptedException e) {
+                // thread Interrupted
                 return;
             } catch (IllegalAccessException e) {
                 // TODO Auto-generated catch block

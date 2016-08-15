@@ -1,7 +1,9 @@
 package pers.stone.utils.count;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,10 +18,13 @@ public class CountTimeUtil {
 
     static Map<String, LogTime> timeMap = new HashMap<String, LogTime>();
 
+    static List<String> keySeq = new ArrayList<String>();
+
     public static void startCount(String key) {
         LogTime logTime = new LogTime();
         logTime.start = new Date();
         timeMap.put(key, logTime);
+        keySeq.add(key);
     }
 
     public static void endCount(String key) {
@@ -29,8 +34,8 @@ public class CountTimeUtil {
 
     public static String timeInfo() {
         StringBuilder res = new StringBuilder();
-        for (String key : timeMap.keySet()) {
-            res.append("\r\n数据类型:").append(key).append(" 耗时:").append(timeMap.get(key)).append("秒");
+        for (String key : keySeq) {
+            res.append("\r\n数据类型:").append(key).append(" 耗时:").append(timeMap.get(key)).append("ms");
         }
         return res.toString();
     }
@@ -39,10 +44,10 @@ public class CountTimeUtil {
 
         Date start;
         Date end;
-      
+
         @Override
         public String toString() {
-            return String.valueOf((end.getTime() - start.getTime()) / 1000);
+            return String.valueOf((end.getTime() - start.getTime()));
         }
     }
 }
